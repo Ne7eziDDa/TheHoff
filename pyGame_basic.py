@@ -34,8 +34,13 @@ meteor_list = ['meteorBrown_big1.png','meteorBrown_med1.png',
                'meteorBrown_tiny1.png']
 for img in meteor_list:
     meteor_images.append(pygame.image.load(os.path.join(img_folder, img)))
-bullet_img = pygame.image.load(os.path.join(img_folder, 'bullet_blue.png'))
-bullet_img1 = pygame.image.load(os.path.join(img_folder, 'bullet_pink.png'))
+
+bullet_images = {}
+bullet_images['blue'] = pygame.image.load(os.path.join(img_folder, 'bullet_blue.png'))
+bullet_images['pink'] = pygame.image.load(os.path.join(img_folder, 'bullet_pink.png'))
+bullet_images['yellow'] = pygame.image.load(os.path.join(img_folder, 'bullet_yellow.png'))
+
+#bullet_img = pygame.image.load(os.path.join(img_folder, 'bullet_blue.png'))
 background = pygame.image.load(os.path.join(img_folder, 'backBig.png'))
 background_rect = background.get_rect()
 
@@ -269,7 +274,10 @@ class Mob(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = bullet_img
+        if player.power == 1:
+            self.image = bullet_images['blue']
+        elif player.power >= 2:
+            self.image = bullet_images['yellow']
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
@@ -373,7 +381,7 @@ while running:
         random.choice(expl_sound).play()
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 0.:
+        if random.random() > 0.92:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
