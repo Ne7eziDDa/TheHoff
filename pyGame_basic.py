@@ -41,7 +41,9 @@ background_rect = background.get_rect()
 
 powerup_images = {}
 powerup_images['shield'] = pygame.image.load(os.path.join(img_folder, 'shield.png'))
-powerup_images['bolt'] = pygame.image.load(os.path.join(img_folder, 'bolt.png')) # bolt2 - серебро, брак картинки.
+powerup_images['shield3'] = pygame.image.load(os.path.join(img_folder, 'shield3.png'))
+powerup_images['bolt'] = pygame.image.load(os.path.join(img_folder, 'bolt.png')) # bolt2 и shield2 - серебро, брак картинки.
+powerup_images['bolt3'] = pygame.image.load(os.path.join(img_folder, 'bolt3.png'))
 
 
 explosion_anim = {}
@@ -306,7 +308,7 @@ class Explosion(pygame.sprite.Sprite):
 class Pow(pygame.sprite.Sprite):
     def __init__(self, center):
         pygame.sprite.Sprite.__init__(self)
-        self.type = random.choice(['shield', 'bolt'])
+        self.type = random.choice(['shield', 'shield', 'shield','shield3','bolt', 'bolt', 'bolt', 'bolt3'])
         self.image = powerup_images[self.type]
         self.image.set_colorkey(white)
         self.rect = self.image.get_rect()
@@ -371,7 +373,7 @@ while running:
         random.choice(expl_sound).play()
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 0.9:
+        if random.random() > 0.:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
@@ -381,10 +383,24 @@ while running:
     for hit in hits:
         if hit.type == 'shield':
             shield_sound.play()
-            player.shield += random.randrange(10, 20)
+            player.shield += random.randrange(5, 10)
+            if player.shield >= 100:
+                player.shield = 100
+        if hit.type == 'shield2':
+            shield_sound.play()
+            player.shield += random.randrange(15, 25)
+            if player.shield >= 100:
+                player.shield = 100
+        if hit.type == 'shield3':
+            shield_sound.play()
+            player.shield += random.randrange(30, 50)
             if player.shield >= 100:
                 player.shield = 100
         if hit.type == 'bolt':
+            bolt_sound.play()
+            player.powerup()
+            player.attack = 6500
+        if hit.type == 'bolt3':
             bolt_sound.play()
             player.powerup()
             player.attack = 6500
