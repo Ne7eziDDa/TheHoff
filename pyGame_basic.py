@@ -26,7 +26,7 @@ game_folder = os.path.dirname(__file__) # система поиска папки
 img_folder = os.path.join(game_folder, 'img') # добавление папки img.
 snd_folder = os.path.join(game_folder, 'snd') # добавление папки snd.
 player_img = pygame.image.load(os.path.join(img_folder, 'ship1.png'))#.convert() # при конвертирования добавляет битые пиксели. 
-player_mini = pygame.image.load(os.path.join(img_folder, 'shipTiny.png'))
+player_mini = pygame.image.load(os.path.join(img_folder, 'ship1Tiny.png'))
 meteor_images = []
 meteor_list = ['meteorBrown_big1.png','meteorBrown_med1.png',
                'meteorBrown_med1.png','meteorBrown_med3.png',
@@ -41,7 +41,7 @@ background_rect = background.get_rect()
 
 powerup_images = {}
 powerup_images['shield'] = pygame.image.load(os.path.join(img_folder, 'shield.png'))
-powerup_images['bolt'] = pygame.image.load(os.path.join(img_folder, 'bolt.png'))
+powerup_images['bolt'] = pygame.image.load(os.path.join(img_folder, 'bolt.png')) # bolt2 - серебро, брак картинки.
 
 
 explosion_anim = {}
@@ -65,7 +65,7 @@ for i in range(9):
 shoot_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'LaserShoot.wav')) # загрузка звука выстрела.
 shield_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'Powerup2.wav'))
 bolt_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'Powerup.wav'))
-dead_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'playerDead.wav'))
+dead_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'playerDead.ogg'))
 expl_sound = []
 for snd in ['Expl1.wav', 'Expl2.wav']:
     expl_sound.append(pygame.mixer.Sound(os.path.join(snd_folder, snd))) # загрузка списка звуков для взрыва.
@@ -161,7 +161,7 @@ class Player(pygame.sprite.Sprite):
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1200:
             self.hidden = False
             self.rect.centerx = WIDTH / 2
-            self.rect.bottom = HEIGHT + 18
+            self.rect.bottom = HEIGHT + 28
 
         self.speedx = 0
         self.speedy = 0
@@ -195,8 +195,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
         if self.rect.right < 0:
             self.rect.right = WIDTH
-        if self.rect.bottom > HEIGHT + 48:
-            self.rect.bottom = HEIGHT + 48
+        if self.rect.bottom > HEIGHT - 28:
+            self.rect.bottom = HEIGHT - 28
 
     def powerup(self):
         self.power += 1
@@ -213,8 +213,8 @@ class Player(pygame.sprite.Sprite):
                 bullets.add(bullet)
                 shoot_sound.play()
             if self.power >= 2:
-                bullet1 = Bullet(self.rect.left + 65, self.rect.top)
-                bullet2 = Bullet(self.rect.right - 65, self.rect.top)
+                bullet1 = Bullet(self.rect.left + 85, self.rect.top)
+                bullet2 = Bullet(self.rect.right - 85, self.rect.top)
                 all_sprites.add(bullet1)
                 all_sprites.add(bullet2)
                 bullets.add(bullet1)
@@ -414,10 +414,11 @@ while running:
     all_sprites.draw(screen)
 
     draw_text(screen, str(score), 18, WIDTH / 2, 10)
+    #draw_text(screen, str(FPS), 18, WIDTH / 2 + 50, 10) #FPS
     draw_shield_bar(screen, 10, 10, player.shield)
     if player.attack >= 6500:
         draw_bonus_attack(screen, 10, 25, player.attack)
-    draw_lives(screen, WIDTH - 40, 10, player.lives, player_mini)
+    draw_lives(screen, WIDTH - 35, 10, player.lives, player_mini)
 
     # Переворот экрана после отрисовки.
     pygame.display.flip()
