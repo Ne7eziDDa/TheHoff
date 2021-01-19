@@ -290,6 +290,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speedy = 0
         if player.power == 1:
             self.image = bullet_images['blue']
+            player.shoot_delay = 350
             self.speedy = -20
         elif player.power == 2:
             self.image = bullet_images['yellow']
@@ -355,11 +356,12 @@ bullets = pygame.sprite.Group()
 powerups = pygame.sprite.Group() # группировка спрайтов.
 
 player = Player()
+
+score = 0 # переменная счёта. 
 all_sprites.add(player) # добавление player в папку.
-for i in range (12): # вот что надо крутить при увеличении уровня.
+for i in range (10): # вот что надо крутить при увеличении уровня.
     newmob()
     
-score = 0 # переменная счёта. 
 pygame.mixer.music.play(loops=-1) # включение фоновой музыки. loops - кол-во повторений, где -1 - бесконечное повторение.
 
 game_over = False
@@ -375,10 +377,6 @@ while running:
 
         player = Player()
         all_sprites.add(player) # добавление player в папку.
-        for i in range (10): # вот что надо крутить при увеличении уровня.
-            newmob()
-    
-        score = 0 # переменная счёта. 
         pygame.mixer.music.play(loops=-1) # включение фоновой музыки. loops - кол-во повторений, где -1 - бесконечное повторение.
 
 
@@ -402,7 +400,7 @@ while running:
         random.choice(expl_sound).play()
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 0.51:
+        if random.random() > 0.91:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
