@@ -206,7 +206,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT - 28
 
     def powerup(self):
-        self.power += 1
         self.power_time = pygame.time.get_ticks()
    
     def shoot(self):
@@ -219,13 +218,26 @@ class Player(pygame.sprite.Sprite):
                 all_sprites.add(bullet)
                 bullets.add(bullet)
                 shoot_sound.play()
-            if self.power >= 2:
+            if self.power == 2:
                 bullet1 = Bullet(self.rect.left + 85, self.rect.top)
                 bullet2 = Bullet(self.rect.right - 85, self.rect.top)
                 all_sprites.add(bullet1)
                 all_sprites.add(bullet2)
                 bullets.add(bullet1)
                 bullets.add(bullet2)
+                shoot_sound.play()
+            if self.power == 3:
+                bullet_sprite = []
+                bullet1 = Bullet(self.rect.left + 85, self.rect.top)
+                bullet2 = Bullet(self.rect.right - 85, self.rect.top)
+                bullet3 = Bullet(self.rect.left + 62, self.rect.top)
+                bullet4 = Bullet(self.rect.right - 62, self.rect.top)
+                bullet_sprite.append(bullet1)
+                bullet_sprite.append(bullet2)
+                bullet_sprite.append(bullet3)
+                bullet_sprite.append(bullet4)
+                all_sprites.add(bullet_sprite)
+                bullets.add(bullet_sprite)
                 shoot_sound.play()
                 
 
@@ -276,12 +288,19 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         if player.power == 1:
             self.image = bullet_images['blue']
-        elif player.power >= 2:
+        elif player.power == 2:
             self.image = bullet_images['yellow']
+            player.shoot_delay = 250 # нужен баланс скорость / кол-во выстрелов / урон?
+        elif player.power == 3:
+            self.image = bullet_images['pink']
+            player.shoot_delay = 425
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
         self.speedy = -24
+        if player.power == 3:
+            self.speedy = -20
+            self.speedx = 5
 
     def update(self):
         self.rect.y += self.speedy
@@ -381,7 +400,7 @@ while running:
         random.choice(expl_sound).play()
         expl = Explosion(hit.rect.center, 'lg')
         all_sprites.add(expl)
-        if random.random() > 0.92:
+        if random.random() > 0.51:
             pow = Pow(hit.rect.center)
             all_sprites.add(pow)
             powerups.add(pow)
@@ -406,10 +425,12 @@ while running:
                 player.shield = 100
         if hit.type == 'bolt':
             bolt_sound.play()
+            player.power = 2
             player.powerup()
             player.attack = 6500
         if hit.type == 'bolt3':
             bolt_sound.play()
+            player.power = 3
             player.powerup()
             player.attack = 6500
     
