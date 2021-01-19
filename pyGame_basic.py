@@ -449,6 +449,8 @@ while running:
             dead_sound.play()
             all_sprites.add(death_explosion)
             player.hide()
+            player.power = 1
+            player.attack = 0
             player.lives -= 1
             player.shield = 100
 
