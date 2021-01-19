@@ -135,7 +135,7 @@ def show_go_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP: # ДОБАВИТЬ ВЫХОД ПО ESC!
                 waiting = False
 
 class Player(pygame.sprite.Sprite): 
@@ -157,7 +157,6 @@ class Player(pygame.sprite.Sprite):
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
         self.power = 1
-        self.power_time = pygame.time.get_ticks()
 
     
     def update(self):
@@ -165,10 +164,14 @@ class Player(pygame.sprite.Sprite):
             self.power = 1
             self.attack = 0
             self.power_time = pygame.time.get_ticks()
-        if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1200:
+        if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1500:
             self.hidden = False
             self.rect.centerx = WIDTH / 2
             self.rect.bottom = HEIGHT + 28
+        if player.attack > 0 and pygame.time.get_ticks() - self.power_time >= 10:
+            print(f'{pygame.time.get_ticks()} : {self.power_time}')
+            player.attack -= 15
+            print(f'player.attack : {player.attack}')
 
         self.speedx = 0
         self.speedy = 0
@@ -374,11 +377,12 @@ while running:
         mobs = pygame.sprite.Group()
         bullets = pygame.sprite.Group()
         powerups = pygame.sprite.Group() # группировка спрайтов.
-
         player = Player()
         all_sprites.add(player) # добавление player в папку.
         pygame.mixer.music.play(loops=-1) # включение фоновой музыки. loops - кол-во повторений, где -1 - бесконечное повторение.
-
+        for i in range(10):
+            newmob()
+        score = 0
 
     clock.tick(FPS) # держим цикл на нужной скорости.
     # Ввод процесса, события.
@@ -433,7 +437,6 @@ while running:
             player.power = 3
             player.powerup()
             player.attack = 6500
-    
 
     hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
     for hit in hits:
@@ -460,7 +463,7 @@ while running:
 
     draw_text(screen, str(score), 18, WIDTH / 2, 10)
     draw_shield_bar(screen, 10, 10, player.shield)
-    if player.attack >= 6500:
+    if player.attack > 0:
         draw_bonus_attack(screen, 10, 25, player.attack)
     draw_lives(screen, WIDTH - 35, 10, player.lives, player_mini)
 
