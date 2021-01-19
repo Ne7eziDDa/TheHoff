@@ -213,34 +213,35 @@ class Player(pygame.sprite.Sprite):
     def shoot(self):
         now = pygame.time.get_ticks()
 
-        if now - self.last_shot > self.shoot_delay:
-            self.last_shot = now
-            if self.power == 1:
-                bullet = Bullet(self.rect.centerx, self.rect.top)
-                all_sprites.add(bullet)
-                bullets.add(bullet)
-                shoot_sound.play()
-            if self.power == 2:
-                bullet1 = Bullet(self.rect.left + 85, self.rect.top)
-                bullet2 = Bullet(self.rect.right - 85, self.rect.top)
-                all_sprites.add(bullet1)
-                all_sprites.add(bullet2)
-                bullets.add(bullet1)
-                bullets.add(bullet2)
-                shoot_sound.play()
-            if self.power == 3:
-                bullet_sprite = []
-                bullet1 = Bullet(self.rect.left + 15, self.rect.top)
-                bullet2 = Bullet(self.rect.right - 15, self.rect.top)
-                bullet3 = Bullet(self.rect.left + 62, self.rect.top)
-                bullet4 = Bullet(self.rect.right - 62, self.rect.top)
-                bullet_sprite.append(bullet1)
-                bullet_sprite.append(bullet2)
-                bullet_sprite.append(bullet3)
-                bullet_sprite.append(bullet4)
-                all_sprites.add(bullet_sprite)
-                bullets.add(bullet_sprite)
-                shoot_sound.play()
+        if self.hidden == False:
+            if now - self.last_shot > self.shoot_delay:
+                self.last_shot = now
+                if self.power == 1:
+                    bullet = Bullet(self.rect.centerx, self.rect.top)
+                    all_sprites.add(bullet)
+                    bullets.add(bullet)
+                    shoot_sound.play()
+                if self.power == 2:
+                    bullet1 = Bullet(self.rect.left + 85, self.rect.top)
+                    bullet2 = Bullet(self.rect.right - 85, self.rect.top)
+                    all_sprites.add(bullet1)
+                    all_sprites.add(bullet2)
+                    bullets.add(bullet1)
+                    bullets.add(bullet2)
+                    shoot_sound.play()
+                if self.power == 3:
+                    bullet_sprite = []
+                    bullet1 = Bullet(self.rect.left + 15, self.rect.top)
+                    bullet2 = Bullet(self.rect.right - 15, self.rect.top)
+                    bullet3 = Bullet(self.rect.left + 62, self.rect.top)
+                    bullet4 = Bullet(self.rect.right - 62, self.rect.top)
+                    bullet_sprite.append(bullet1)
+                    bullet_sprite.append(bullet2)
+                    bullet_sprite.append(bullet3)
+                    bullet_sprite.append(bullet4)
+                    all_sprites.add(bullet_sprite)
+                    bullets.add(bullet_sprite)
+                    shoot_sound.play()
                 
 
     def hide(self):
