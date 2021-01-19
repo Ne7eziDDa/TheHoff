@@ -162,7 +162,6 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         if self.power >= 2 and pygame.time.get_ticks() - self.power_time > POWERUP_TIME:
             self.power = 1
-            self.attack = 0
             self.power_time = pygame.time.get_ticks()
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1500:
             self.hidden = False
@@ -170,7 +169,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT + 28
         if player.attack > 0 and pygame.time.get_ticks() - self.power_time >= 10:
             print(f'{pygame.time.get_ticks()} : {self.power_time}')
-            player.attack -= 15
+            player.attack -= 16.8
             print(f'player.attack : {player.attack}')
 
         self.speedx = 0
