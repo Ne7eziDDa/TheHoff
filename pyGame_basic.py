@@ -459,7 +459,6 @@ while running:
     all_sprites.draw(screen)
 
     draw_text(screen, str(score), 18, WIDTH / 2, 10)
-    #draw_text(screen, str(FPS), 18, WIDTH / 2 + 50, 10) #FPS
     draw_shield_bar(screen, 10, 10, player.shield)
     if player.attack >= 6500:
         draw_bonus_attack(screen, 10, 25, player.attack)
