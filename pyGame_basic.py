@@ -298,7 +298,7 @@ class Bullet(pygame.sprite.Sprite):
         elif player.power == 3:
             self.image = bullet_images['pink']
             player.shoot_delay = 425
-            self.speedx = -20
+            self.speedy = -15
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
