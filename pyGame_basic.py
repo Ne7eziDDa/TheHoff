@@ -5,7 +5,7 @@ import os
 WIDTH = 1376
 HEIGHT = 710
 FPS = 60
-POWERUP_TIME = 6500
+POWERUP_TIME = 6500 # общеевремя действия бонусов.
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -76,6 +76,7 @@ dead_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'playerDead.ogg'))
 expl_sound = []
 for snd in ['Expl1.wav', 'Expl2.wav']:
     expl_sound.append(pygame.mixer.Sound(os.path.join(snd_folder, snd))) # загрузка списка звуков для взрыва.
+                                                                         # ДОБАВИТЬ НЕСКОЛЬКО ВАРИАНТОВ ДЛЯ РАЗНЫХ ВЫСТРЕЛОВ!
 pygame.mixer.music.load(os.path.join(snd_folder, 'ObservingTheStar.ogg')) # загрузка фоновой мелодии.
 pygame.mixer.music.set_volume(1) # громкость 80%
 
@@ -162,9 +163,8 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         if self.power >= 2 and pygame.time.get_ticks() - self.power_time > POWERUP_TIME:
             self.power = 1
+            self.attack = 0
             self.power_time = pygame.time.get_ticks()
-        #if self.hidden:
-        #    print(pygame.time.get_ticks(), self.hide_timer)
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1200:
             self.hidden = False
             self.rect.centerx = WIDTH / 2
@@ -189,9 +189,9 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_UP]:
             self.speedy = -6
         if keystate[pygame.K_s]:
-            self.speedy = 3.5 
+            self.speedy = 4
         if keystate[pygame.K_DOWN]:
-            self.speedy = 3.5
+            self.speedy = 4
         if keystate[pygame.K_SPACE]:
             self.shoot()
 
@@ -228,8 +228,8 @@ class Player(pygame.sprite.Sprite):
                 shoot_sound.play()
             if self.power == 3:
                 bullet_sprite = []
-                bullet1 = Bullet(self.rect.left + 85, self.rect.top)
-                bullet2 = Bullet(self.rect.right - 85, self.rect.top)
+                bullet1 = Bullet(self.rect.left + 15, self.rect.top)
+                bullet2 = Bullet(self.rect.right - 15, self.rect.top)
                 bullet3 = Bullet(self.rect.left + 62, self.rect.top)
                 bullet4 = Bullet(self.rect.right - 62, self.rect.top)
                 bullet_sprite.append(bullet1)
@@ -286,24 +286,26 @@ class Mob(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
+        self.speedx = 0
+        self.speedy = 0
         if player.power == 1:
             self.image = bullet_images['blue']
+            self.speedy = -20
         elif player.power == 2:
             self.image = bullet_images['yellow']
             player.shoot_delay = 250 # нужен баланс скорость / кол-во выстрелов / урон?
+            self.speedy = -28
         elif player.power == 3:
             self.image = bullet_images['pink']
             player.shoot_delay = 425
+            self.speedx = -20
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
-        self.speedy = -24
-        if player.power == 3:
-            self.speedy = -20
-            self.speedx = 5
 
     def update(self):
         self.rect.y += self.speedy
+        self.rect.x += self.speedx
         if self.rect.bottom < 0:
             self.kill()
 
@@ -354,7 +356,7 @@ powerups = pygame.sprite.Group() # группировка спрайтов.
 
 player = Player()
 all_sprites.add(player) # добавление player в папку.
-for i in range (10): # вот что надо крутить при увеличении уровня.
+for i in range (12): # вот что надо крутить при увеличении уровня.
     newmob()
     
 score = 0 # переменная счёта. 
