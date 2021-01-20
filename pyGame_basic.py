@@ -25,6 +25,10 @@ clock = pygame.time.Clock()
 game_folder = os.path.dirname(__file__) # система поиска папки игры для любой ОС.
 img_folder = os.path.join(game_folder, 'img') # добавление папки img.
 snd_folder = os.path.join(game_folder, 'snd') # добавление папки snd.
+
+game_icon = pygame.image.load(os.path.join(img_folder, 'icon.png'))
+pygame.display.set_icon(game_icon)
+
 player_img = pygame.image.load(os.path.join(img_folder, 'ship1.png'))#.convert() # при конвертирования добавляет битые пиксели. 
 player_mini = pygame.image.load(os.path.join(img_folder, 'ship1Tiny.png'))
 meteor_images = []
