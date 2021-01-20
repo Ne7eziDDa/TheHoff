@@ -74,6 +74,9 @@ for i in range(9):
 
 # загрузка звуков.
 shoot_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'LaserShoot.wav')) # загрузка звука выстрела.
+shoot_sound2 = pygame.mixer.Sound(os.path.join(snd_folder, 'DoubleShoot.wav'))
+shoot_sound3 = pygame.mixer.Sound(os.path.join(snd_folder, 'QuadroShoot.wav'))
+
 shield_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'Powerup2.wav'))
 bolt_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'Powerup.wav'))
 dead_sound = pygame.mixer.Sound(os.path.join(snd_folder, 'playerDead.ogg'))
@@ -232,7 +235,7 @@ class Player(pygame.sprite.Sprite):
                     all_sprites.add(bullet2)
                     bullets.add(bullet1)
                     bullets.add(bullet2)
-                    shoot_sound.play()
+                    shoot_sound2.play()
                 if self.power == 3:
                     bullet_sprite = []
                     bullet1 = Bullet(self.rect.left + 15, self.rect.top)
@@ -245,7 +248,7 @@ class Player(pygame.sprite.Sprite):
                     bullet_sprite.append(bullet4)
                     all_sprites.add(bullet_sprite)
                     bullets.add(bullet_sprite)
-                    shoot_sound.play()
+                    shoot_sound3.play()
                 
 
     def hide(self):
