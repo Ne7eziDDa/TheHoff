@@ -168,9 +168,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.centerx = WIDTH / 2
             self.rect.bottom = HEIGHT + 28
         if player.attack > 0 and pygame.time.get_ticks() - self.power_time >= 10:
-            print(f'{pygame.time.get_ticks()} : {self.power_time}')
+            #print(f'{pygame.time.get_ticks()} : {self.power_time}')
             player.attack -= 16.8
-            print(f'player.attack : {player.attack}')
+            #print(f'player.attack : {player.attack}')
 
         self.speedx = 0
         self.speedy = 0
@@ -359,6 +359,7 @@ bullets = pygame.sprite.Group()
 powerups = pygame.sprite.Group() # группировка спрайтов.
 
 player = Player()
+mob = Mob()
 
 score = 0 # переменная счёта. 
 all_sprites.add(player) # добавление player в папку.
@@ -392,7 +393,6 @@ while running:
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_ESCAPE]:
             running = False 
-
 
     # Обновление.
     all_sprites.update()
